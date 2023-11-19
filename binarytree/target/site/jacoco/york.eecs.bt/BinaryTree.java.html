@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BinaryTree.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">binary_tree</a> &gt; <a href="index.source.html" class="el_package">york.eecs.bt</a> &gt; <span class="el_source">BinaryTree.java</span></div><h1>BinaryTree.java</h1><pre class="source lang-java linenums">package york.eecs.bt;
+
+import java.util.*;
+
+/**
+ * Binary tree
+ */
+public class BinaryTree {
+    private Node root;
+
+    /**
+     * Create new binary tree with root node
+     * @param root Root node
+     */
+<span class="fc" id="L15">    public BinaryTree(Node root) {</span>
+<span class="fc" id="L16">        this.setRoot(root);</span>
+<span class="fc" id="L17">    }</span>
+
+    /**
+     * Create new empty binary tree
+     */
+<span class="fc" id="L22">    public BinaryTree() {</span>
+<span class="fc" id="L23">        this.setRoot(null);</span>
+<span class="fc" id="L24">    }</span>
+
+
+    public Node getRoot() {
+<span class="fc" id="L28">        return root;</span>
+    }
+
+    public void setRoot(Node root) {
+<span class="fc" id="L32">        this.root = root;</span>
+<span class="fc" id="L33">    }</span>
+
+    /**
+     * Insert new node into the tree. &lt;br&gt;
+     * This method will insert new node into last tree level, until last tree level is full, then add new level.
+     * @param newNode new tree node
+     */
+    public void insert(Node newNode) {
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        if (this.root == null) {</span>
+<span class="fc" id="L42">            this.root = newNode;</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        } else if (this.root.getLeft() == null) {</span>
+<span class="fc" id="L44">            this.root.setLeft(newNode);</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        } else if (this.root.getRight() == null) {</span>
+<span class="fc" id="L46">            this.root.setRight(newNode);</span>
+        } else {
+<span class="fc" id="L48">            List&lt;Node&gt; siblingNodes = new LinkedList&lt;Node&gt;();</span>
+<span class="fc" id="L49">            siblingNodes.add(this.root.getLeft());</span>
+<span class="fc" id="L50">            siblingNodes.add(this.root.getRight());</span>
+<span class="fc" id="L51">            inserting(siblingNodes, newNode);</span>
+        }
+<span class="fc" id="L53">    }</span>
+
+    /**
+     * Check a level sibling nodes, find the node which dones't have left or right child, then insert the new node
+     * @param siblingNodes List of current level tree nodes
+     * @param newNode new tree node
+     */
+    private void inserting(List&lt;Node&gt; siblingNodes, Node newNode) {
+<span class="fc" id="L61">        List&lt;Node&gt; nextSiblingNodes = new LinkedList&lt;Node&gt;();</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">        for (Node currentNode : siblingNodes) {</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">            if (currentNode.getLeft() == null) {</span>
+<span class="fc" id="L64">                currentNode.setLeft(newNode);</span>
+<span class="fc" id="L65">                return;</span>
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">            } else if (currentNode.getRight() == null) {</span>
+<span class="fc" id="L67">                currentNode.setRight(newNode);</span>
+<span class="fc" id="L68">                return;</span>
+            }
+<span class="nc" id="L70">            nextSiblingNodes.add(currentNode.getLeft());</span>
+<span class="nc" id="L71">            nextSiblingNodes.add(currentNode.getRight());</span>
+<span class="nc" id="L72">        }</span>
+<span class="nc" id="L73">        inserting(nextSiblingNodes, newNode);</span>
+<span class="nc" id="L74">    }</span>
+
+    /**
+     * Deep first search pre-oder tree traversal
+     * @return the pre-order tree nodes
+     */
+    public List&lt;Node&gt; preOrder() {
+<span class="fc" id="L81">        return dlr(this.root, new LinkedList&lt;Node&gt;());</span>
+    }
+
+    /**
+     * Pre-order tree traversal
+     * @param currentNode  current tree node
+     * @param preOrderList current traversal result
+     * @return current traversal result
+     */
+    private List&lt;Node&gt; dlr(Node currentNode, List&lt;Node&gt;preOrderList) {
+<span class="fc" id="L91">        preOrderList.add(currentNode);</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        if (currentNode.getLeft() != null) {</span>
+<span class="fc" id="L93">            dlr(currentNode.getLeft(), preOrderList);</span>
+        }
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        if (currentNode.getRight() != null) {</span>
+<span class="fc" id="L96">            dlr(currentNode.getRight(), preOrderList);</span>
+        }
+<span class="fc" id="L98">        return preOrderList;</span>
+    }
+
+    /**
+     * Deep first search in-oder tree traversal
+     * @return the in-order tree nodes
+     */
+    public List&lt;Node&gt; inOrder() {
+<span class="fc" id="L106">        return ldr(this.root, new LinkedList&lt;Node&gt;());</span>
+    }
+
+    /**
+     * In-order tree traversal
+     * @param currentNode  current tree node
+     * @param inOrderList current traversal result
+     * @return current traversal result
+     */
+    private List&lt;Node&gt; ldr(Node currentNode, List&lt;Node&gt;inOrderList) {
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        if (currentNode.getLeft() != null) {</span>
+<span class="fc" id="L117">            ldr(currentNode.getLeft(), inOrderList);</span>
+        }
+<span class="fc" id="L119">        inOrderList.add(currentNode);</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">        if (currentNode.getRight() != null) {</span>
+<span class="fc" id="L121">            ldr(currentNode.getRight(), inOrderList);</span>
+        }
+<span class="fc" id="L123">        return inOrderList;</span>
+    }
+
+    /**
+     * Deep first search post-oder tree traversal
+     * @return the post-order tree nodes
+     */
+    public List&lt;Node&gt; postOrder() {
+<span class="fc" id="L131">        return lrd(this.root, new LinkedList&lt;Node&gt;());</span>
+    }
+
+    /**
+     * Post-order tree traversal
+     * @param currentNode  current tree node
+     * @param postOrderList current traversal result
+     * @return current traversal result
+     */
+    private List&lt;Node&gt; lrd(Node currentNode, List&lt;Node&gt;postOrderList) {
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        if (currentNode.getLeft() != null) {</span>
+<span class="fc" id="L142">            lrd(currentNode.getLeft(), postOrderList);</span>
+        }
+<span class="fc bfc" id="L144" title="All 2 branches covered.">        if (currentNode.getRight() != null) {</span>
+<span class="fc" id="L145">            lrd(currentNode.getRight(), postOrderList);</span>
+        }
+<span class="fc" id="L147">        postOrderList.add(currentNode);</span>
+<span class="fc" id="L148">        return postOrderList;</span>
+    }
+
+    /**
+     * Non-recursive method of breadth first search traversal
+     * @return the bfs tree nodes
+     */
+    public List&lt;Node&gt; bfs() {
+<span class="fc" id="L156">        List&lt;Node&gt; bfsList = new LinkedList&lt;Node&gt;();</span>
+<span class="fc" id="L157">        Queue&lt;Node&gt; nodeQueue = new LinkedList&lt;Node&gt;();</span>
+<span class="fc" id="L158">        nodeQueue.add(this.root);</span>
+
+<span class="fc bfc" id="L160" title="All 2 branches covered.">        while (nodeQueue.size() != 0) {</span>
+<span class="fc" id="L161">            Node n = nodeQueue.poll();</span>
+<span class="fc" id="L162">            bfsList.add(n);</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">            if (n.getLeft() != null) nodeQueue.add(n.getLeft());</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">            if (n.getRight() != null) nodeQueue.add(n.getRight());</span>
+<span class="fc" id="L165">        }</span>
+<span class="fc" id="L166">        return bfsList;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
