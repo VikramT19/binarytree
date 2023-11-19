@@ -21,14 +21,8 @@ mvn randoop:test
 
 # Testing Details
 
-EvoSuite
+- EvoSuite: An automatic test case generation tool. It automatically generates JUnit test cases for your code. EvoSuite-generated tests can be found in the test/evosuite-tests/ directory.
 
-EvoSuite is an automatic test case generation tool. It automatically generates JUnit test cases for your code. EvoSuite-generated tests can be found in the test/evosuite-tests/ directory.
+- JUnit: A widely used testing framework for Java. JUnit tests can be found in the test/junit-tests/ directory.
 
-JUnit
-
-JUnit is a widely used testing framework for Java. JUnit tests can be found in the test/junit-tests/ directory.
-
-Randoop
-
-Randoop is an automatic test generation tool. It creates random sequences of method calls to find and report errors. Randoop-generated tests can be found in the test/randoop-tests/ directory.
+- Randoop: An automatic test generation tool. It creates random sequences of method calls to find and report errors. Randoop-generated tests can be found in the test/randoop-tests/ directory.
